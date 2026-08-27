@@ -1,360 +1,665 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tap Rush</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #eef2ff, #f8fafc);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .game {
-      width: min(100%, 430px);
-      background: rgba(255, 255, 255, 0.97);
-      border-radius: 28px;
-      padding: 28px 22px;
-      text-align: center;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 38px;
-    }
-
-    .subtitle {
-      color: #666;
-      margin: 8px 0 22px;
-    }
-
-    .score-box {
-      display: flex;
-      justify-content: space-around;
-      margin: 18px 0;
-    }
-
-    .score-label {
-      color: #666;
-      font-size: 16px;
-    }
-
-    .score {
-      font-size: 34px;
-      font-weight: bold;
-      margin-top: 4px;
-    }
-
-    #timer {
-      font-size: 21px;
-      font-weight: bold;
-      margin: 18px 0;
-    }
-
-    #tapButton {
-      width: min(70vw, 240px);
-      height: min(70vw, 240px);
-      border-radius: 50%;
-      border: 0;
-      background: #111827;
-      color: white;
-      font-size: 34px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 9px 0 #4b5563;
-      touch-action: manipulation;
-      transition: transform 0.08s;
-    }
-
-    #tapButton:active:not(:disabled) {
-      transform: translateY(7px) scale(0.97);
-      box-shadow: 0 2px 0 #4b5563;
-    }
-
-    #tapButton:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    #startButton,
-    #playAgainButton {
-      margin-top: 28px;
-      padding: 15px 32px;
-      border: 0;
-      border-radius: 14px;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #startButton {
-      background: #111827;
-    }
-
-    #playAgainButton {
-      display: none;
-      background: #2563eb;
-    }
-
-    #message {
-      min-height: 28px;
-      margin-top: 18px;
-      font-weight: bold;
-      font-size: 17px;
-    }
-
-    .footer {
-      margin-top: 20px;
-      color: #888;
-      font-size: 13px;
-    }
-
-    .pop {
-      animation: pop 0.15s ease;
-    }
-
-    @keyframes pop {
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    .celebrate {
-      animation: celebrate 0.5s ease;
-    }
-
-    @keyframes celebrate {
-      25% {
-        transform: scale(1.05) rotate(-2deg);
-      }
-      50% {
-        transform: scale(1.1) rotate(2deg);
-      }
-      75% {
-        transform: scale(1.05) rotate(-1deg);
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Rush Arcade</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#111827;padding:15px}
+.app{max-width:480px;margin:auto}
+header{text-align:center;padding:15px 5px}
+h1{margin:0;font-size:31px}
+header p{color:#64748b;margin:7px}
+.screen{display:none}
+.active{display:block}
+.card{background:#fff;border-radius:22px;padding:18px;margin-bottom:15px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game{border:0;border-radius:18px;background:#f1f5f9;padding:15px 8px;min-height:120px;font-size:16px;font-weight:bold}
+.game b{display:block;font-size:36px;margin-bottom:8px}
+.game small{display:block;color:#64748b;margin-top:5px;font-weight:normal}
+.top{display:flex;justify-content:space-between;margin-bottom:10px}
+.back,.btn,.key{border:0;border-radius:12px;padding:12px 18px;font-weight:bold;cursor:pointer}
+.back,.key{background:#e5e7eb}
+.btn{background:#111827;color:#fff;margin:4px}
+.blue{background:#2563eb}
+h2{text-align:center;margin:8px}
+.sub{text-align:center;color:#64748b}
+.stats{display:flex;justify-content:space-around;text-align:center;margin:15px}
+.stats b{display:block;font-size:27px}
+.stats small{color:#64748b}
+.timer{text-align:center;font-weight:bold;font-size:19px}
+.message{text-align:center;min-height:28px;font-weight:bold;margin:12px}
+.tap{display:block;width:220px;height:220px;border:0;border-radius:50%;background:#111827;color:#fff;font-size:32px;font-weight:bold;margin:20px auto}
+.tap:active{transform:scale(.96)}
+.area{height:300px;background:#f1f5f9;border-radius:18px;position:relative;margin:15px 0}
+.target{position:absolute;width:60px;height:60px;border:0;border-radius:50%;background:#111827;display:none}
+.memory{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}
+.mem{aspect-ratio:1;border:0;border-radius:12px;background:#111827;color:#fff;font-size:25px}
+.open{background:#e5e7eb;color:#111827}
+.number{text-align:center;font-size:40px;font-weight:bold;margin:15px;min-height:50px}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:auto}
+.key{font-size:21px;padding:17px}
+.colorbox{width:170px;height:170px;border-radius:22px;margin:20px auto}
+.colors{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.choice{height:60px;border:0;border-radius:13px;font-weight:bold}
+.ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:20px auto}
+.cell{aspect-ratio:1;border:0;border-radius:13px;background:#e5e7eb;font-size:40px;font-weight:bold}
+footer{text-align:center;color:#94a3b8;font-size:12px;padding:12px}
+</style>
 </head>
 
 <body>
+<div class="app">
 
-  <div class="game" id="gameCard">
+<header>
+<h1>🎮 Tap Rush Arcade</h1>
+<p>6 Mini Games · Play · Score · Challenge</p>
+</header>
 
-    <h1>⚡ Tap Rush</h1>
+<section id="home" class="screen active">
+<div class="card">
+<h2>Choose Your Game</h2>
+<div class="grid">
+<button class="game" onclick="openGame('tap')"><b>⚡</b>Tap Rush<small>Tap as fast as you can</small></button>
+<button class="game" onclick="openGame('target')"><b>🎯</b>Target Hit<small>Hit the targets</small></button>
+<button class="game" onclick="openGame('memory')"><b>🧠</b>Memory Match<small>Find the pairs</small></button>
+<button class="game" onclick="openGame('number')"><b>🔢</b>Number Rush<small>Use the keypad</small></button>
+<button class="game" onclick="openGame('color')"><b>🎨</b>Color Match<small>Pick the color</small></button>
+<button class="game" onclick="openGame('ttt')"><b>❌</b>Tic-Tac-Toe<small>Beat the computer</small></button>
+</div>
+</div>
+</section>
 
-    <div class="subtitle">
-      Tap as fast as you can!
-    </div>
+<section id="tap" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>⚡ Tap Rush</h2>
+<div class="sub">Tap as fast as you can!</div>
+<div class="stats">
+<div><small>Score</small><b id="ts">0</b></div>
+<div><small>Best</small><b id="tb">0</b></div>
+</div>
+<div class="timer" id="tt">Time: 10s</div>
+<button class="tap" id="tapBtn" disabled>TAP!</button>
+<div style="text-align:center">
+<button class="btn" id="tapStart" onclick="tapStart()">START GAME</button>
+<button class="btn blue" id="tapAgain" style="display:none" onclick="tapStart()">PLAY AGAIN</button>
+</div>
+<div class="message" id="tm"></div>
+</div>
+</section>
 
-    <div class="score-box">
+<section id="target" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>🎯 Target Hit</h2>
+<div class="sub">Hit as many targets as possible!</div>
+<div class="stats">
+<div><small>Score</small><b id="xs">0</b></div>
+<div><small>Best</small><b id="xb">0</b></div>
+</div>
+<div class="timer" id="xt">Time: 15s</div>
+<div class="area" id="area">
+<button class="target" id="targetBtn"></button>
+</div>
+<div style="text-align:center">
+<button class="btn" id="targetStart" onclick="targetStart()">START GAME</button>
+<button class="btn blue" id="targetAgain" style="display:none" onclick="targetStart()">PLAY AGAIN</button>
+</div>
+<div class="message" id="xm"></div>
+</div>
+</section>
 
-      <div>
-        <div class="score-label">Score</div>
-        <div id="score" class="score">0</div>
-      </div>
+<section id="memory" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>🧠 Memory Match</h2>
+<div class="sub">Match all the pairs!</div>
+<div class="stats">
+<div><small>Moves</small><b id="mm">0</b></div>
+<div><small>Best</small><b id="mb">-</b></div>
+</div>
+<div class="memory" id="memoryGrid"></div>
+<div style="text-align:center">
+<button class="btn blue" onclick="memoryStart()">NEW GAME</button>
+</div>
+<div class="message" id="mmm"></div>
+</div>
+</section>
 
-      <div>
-        <div class="score-label">Best</div>
-        <div id="best" class="score">0</div>
-      </div>
+<section id="number" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>🔢 Number Rush</h2>
+<div class="sub">Type the shown number!</div>
+<div class="stats">
+<div><small>Score</small><b id="ns">0</b></div>
+<div><small>Best</small><b id="nb">0</b></div>
+</div>
+<div class="timer" id="nt">Time: 20s</div>
+<div class="number" id="nd">---</div>
 
-    </div>
+<div class="keys">
+<button class="key" onclick="key('1')">1</button>
+<button class="key" onclick="key('2')">2</button>
+<button class="key" onclick="key('3')">3</button>
+<button class="key" onclick="key('4')">4</button>
+<button class="key" onclick="key('5')">5</button>
+<button class="key" onclick="key('6')">6</button>
+<button class="key" onclick="key('7')">7</button>
+<button class="key" onclick="key('8')">8</button>
+<button class="key" onclick="key('9')">9</button>
+<button class="key" onclick="key('c')">C</button>
+<button class="key" onclick="key('0')">0</button>
+<button class="key" onclick="key('b')">⌫</button>
+</div>
 
-    <div id="timer">Time: 10s</div>
+<div style="text-align:center;margin-top:12px">
+<button class="btn" id="numberStart" onclick="numberStart()">START GAME</button>
+<button class="btn blue" id="numberAgain" style="display:none" onclick="numberStart()">PLAY AGAIN</button>
+</div>
+<div class="message" id="nm"></div>
+</div>
+</section>
 
-    <button id="tapButton" disabled>
-      TAP!
-    </button>
+<section id="color" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>🎨 Color Match</h2>
+<div class="sub">Choose the correct color!</div>
+<div class="stats">
+<div><small>Score</small><b id="cs">0</b></div>
+<div><small>Best</small><b id="cb">0</b></div>
+</div>
+<div class="timer" id="ct">Time: 15s</div>
+<div class="colorbox" id="colorBox"></div>
+<div class="colors" id="colorOptions"></div>
 
-    <br>
+<div style="text-align:center">
+<button class="btn" id="colorStart" onclick="colorStart()">START GAME</button>
+<button class="btn blue" id="colorAgain" style="display:none" onclick="colorStart()">PLAY AGAIN</button>
+</div>
+<div class="message" id="cm"></div>
+</div>
+</section>
 
-    <button id="startButton">
-      START GAME
-    </button>
+<section id="ttt" class="screen">
+<div class="card">
+<div class="top"><button class="back" onclick="home()">← Games</button></div>
+<h2>❌⭕ Tic-Tac-Toe</h2>
+<div class="sub">You are X · Computer is O</div>
+<div class="ttt" id="board"></div>
+<div class="message" id="tmm">Your turn!</div>
+<div style="text-align:center">
+<button class="btn blue" onclick="tttStart()">NEW GAME</button>
+</div>
+</div>
+</section>
 
-    <button id="playAgainButton">
-      PLAY AGAIN
-    </button>
+<footer>Made with care · Tap Rush Arcade</footer>
+</div>
 
-    <div id="message"></div>
+<script>
+let AC=null;
 
-    <div class="footer">
-      Made with care · Tap Rush
-    </div>
+function beep(f=600,d=.08){
+try{
+let A=window.AudioContext||window.webkitAudioContext;
+if(!A)return;
+if(!AC)AC=new A;
+if(AC.state==='suspended')AC.resume();
+let o=AC.createOscillator();
+let g=AC.createGain();
+o.frequency.value=f;
+o.type='sine';
+g.gain.setValueAtTime(.12,AC.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);
+o.connect(g);
+g.connect(AC.destination);
+o.start();
+o.stop(AC.currentTime+d);
+}catch(e){}
+}
 
-  </div>
+function buzz(){
+if(navigator.vibrate)navigator.vibrate(15);
+}
 
-  <script>
-    let score = 0;
-    let timeLeft = 10;
-    let gameRunning = false;
-    let timer = null;
+function fx(f=600){
+beep(f);
+buzz();
+}
 
-    let audioContext = null;
+function best(k,v){
+let b=+localStorage.getItem(k)||0;
+if(v>b)localStorage.setItem(k,v);
+return Math.max(b,v);
+}
 
-    const scoreElement = document.getElementById("score");
-    const bestElement = document.getElementById("best");
-    const timerElement = document.getElementById("timer");
-    const tapButton = document.getElementById("tapButton");
-    const startButton = document.getElementById("startButton");
-    const playAgainButton = document.getElementById("playAgainButton");
-    const message = document.getElementById("message");
-    const gameCard = document.getElementById("gameCard");
+function openGame(id){
+document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+if(id==='memory')memoryStart();
+if(id==='ttt')tttStart();
+window.scrollTo(0,0);
+fx(500);
+}
 
-    let bestScore = Number(localStorage.getItem("tapRushBest")) || 0;
+function home(){
+clearInterval(ti);
+clearInterval(xi);
+clearInterval(ni);
+clearInterval(ci);
+openGame('home');
+}
 
-    bestElement.textContent = bestScore;
+/* TAP RUSH */
+let score=0,time=10,ti;
 
-    function prepareSound() {
-      const AudioContext =
-        window.AudioContext || window.webkitAudioContext;
+tapBtn.onclick=()=>{
+if(time>0){
+score++;
+ts.textContent=score;
+fx(650);
+}
+};
 
-      if (!AudioContext) return;
+function tapStart(){
+clearInterval(ti);
+score=0;
+time=10;
+ts.textContent=0;
+tt.textContent='Time: 10s';
+tm.textContent='';
+tapBtn.disabled=false;
+tapStart.style.display='none';
+tapAgain.style.display='none';
+fx(500);
 
-      if (!audioContext) {
-        audioContext = new AudioContext();
-      }
+ti=setInterval(()=>{
+time--;
+tt.textContent='Time: '+time+'s';
 
-      if (audioContext.state === "suspended") {
-        audioContext.resume();
-      }
-    }
+if(time<=0){
+clearInterval(ti);
+tapBtn.disabled=true;
 
-    function playTapSound() {
-      if (!audioContext) return;
+let old=+localStorage.getItem('tapBest')||0;
+let b=best('tapBest',score);
 
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
+tb.textContent=b;
+tm.textContent=score>old?'🎉 New Best Score: '+score+'!':"⏱️ Time's up! Your score: "+score;
 
-      oscillator.type = "sine";
-      oscillator.frequency.setValueAtTime(
-        620,
-        audioContext.currentTime
-      );
+tapStart.style.display='inline-block';
+tapAgain.style.display='inline-block';
+beep(300,.2);
+}
+},1000);
+}
 
-      gain.gain.setValueAtTime(
-        0.12,
-        audioContext.currentTime
-      );
+tb.textContent=localStorage.getItem('tapBest')||0;
 
-      gain.gain.exponentialRampToValueAtTime(
-        0.001,
-        audioContext.currentTime + 0.07
-      );
+/* TARGET HIT */
+let sc=0,xtime=15,xi;
 
-      oscillator.connect(gain);
-      gain.connect(audioContext.destination);
+function moveTarget(){
+let a=area,b=targetBtn;
+b.style.left=Math.random()*(a.clientWidth-60)+'px';
+b.style.top=Math.random()*(a.clientHeight-60)+'px';
+b.style.display='block';
+}
 
-      oscillator.start();
-      oscillator.stop(
-        audioContext.currentTime + 0.07
-      );
-    }
+targetBtn.onclick=()=>{
+if(xtime>0){
+sc++;
+xs.textContent=sc;
+fx(700);
+moveTarget();
+}
+};
 
-    startButton.addEventListener("click", function () {
-      prepareSound();
-      startGame();
-    });
+function targetStart(){
+clearInterval(xi);
+sc=0;
+xtime=15;
+xs.textContent=0;
+xt.textContent='Time: 15s';
+xm.textContent='';
+targetStart.style.display='none';
+targetAgain.style.display='none';
+moveTarget();
+fx(500);
 
-    playAgainButton.addEventListener("click", function () {
-      prepareSound();
-      startGame();
-    });
+xi=setInterval(()=>{
+xtime--;
+xt.textContent='Time: '+xtime+'s';
 
-    tapButton.addEventListener("click", function () {
-      if (!gameRunning) return;
+if(xtime<=0){
+clearInterval(xi);
+targetBtn.style.display='none';
+xb.textContent=best('targetBest',sc);
+xm.textContent="⏱️ Time's up! Score: "+sc;
+targetStart.style.display='inline-block';
+targetAgain.style.display='inline-block';
+beep(300,.2);
+}
+},1000);
+}
 
-      score++;
-      scoreElement.textContent = score;
+xb.textContent=localStorage.getItem('targetBest')||0;
 
-      playTapSound();
+/* MEMORY MATCH */
+let first=null,lock=false,moves=0,matches=0;
 
-      if (navigator.vibrate) {
-        navigator.vibrate(12);
-      }
+function memoryStart(){
+let a=['🍎','🍎','🚀','🚀','⭐','⭐','🎮','🎮','🔥','🔥','🎯','🎯','💎','💎','⚡','⚡'];
 
-      scoreElement.classList.remove("pop");
-      void scoreElement.offsetWidth;
-      scoreElement.classList.add("pop");
-    });
+a.sort(()=>Math.random()-.5);
 
-    function startGame() {
-      clearInterval(timer);
+first=null;
+lock=false;
+moves=0;
+matches=0;
+mm.textContent=0;
+mmm.textContent='';
+memoryGrid.innerHTML='';
 
-      prepareSound();
+a.forEach(s=>{
+let b=document.createElement('button');
+b.className='mem';
+b.textContent='?';
+b.dataset.s=s;
 
-      score = 0;
-      timeLeft = 10;
-      gameRunning = true;
+b.onclick=()=>flip(b);
 
-      scoreElement.textContent = "0";
-      timerElement.textContent = "Time: 10s";
-      message.textContent = "";
+memoryGrid.appendChild(b);
+});
+}
 
-      tapButton.disabled = false;
-      startButton.disabled = true;
-      playAgainButton.style.display = "none";
+function flip(b){
+if(lock||b.classList.contains('open'))return;
 
-      timer = setInterval(function () {
-        timeLeft--;
+b.classList.add('open');
+b.textContent=b.dataset.s;
+fx(550);
 
-        timerElement.textContent =
-          "Time: " + timeLeft + "s";
+if(!first){
+first=b;
+return;
+}
 
-        if (timeLeft <= 0) {
-          endGame();
-        }
-      }, 1000);
-    }
+moves++;
+mm.textContent=moves;
 
-    function endGame() {
-      clearInterval(timer);
+if(first.dataset.s===b.dataset.s){
+matches++;
+first=null;
 
-      gameRunning = false;
+if(matches===8){
+let old=+localStorage.getItem('memoryBest')||999;
 
-      tapButton.disabled = true;
-      startButton.disabled = false;
-      playAgainButton.style.display = "inline-block";
+if(moves<old)localStorage.setItem('memoryBest',moves);
 
-      if (score > bestScore) {
-        bestScore = score;
+mb.textContent=Math.min(moves,old);
+mmm.textContent='🎉 All pairs matched!';
+beep(800,.2);
+}
+}else{
+let f=first;
+lock=true;
 
-        localStorage.setItem(
-          "tapRushBest",
-          bestScore
-        );
+setTimeout(()=>{
+f.classList.remove('open');
+b.classList.remove('open');
+f.textContent='?';
+b.textContent='?';
+first=null;
+lock=false;
+},650);
+}
+}
 
-        bestElement.textContent = bestScore;
+if(localStorage.getItem('memoryBest'))
+mb.textContent=localStorage.getItem('memoryBest');
 
-        message.textContent =
-          "🎉 New Best Score: " + score + "!";
+/* NUMBER RUSH */
+let nsco=0,ntime=20,nint=null,targetNum='',input='';
 
-        gameCard.classList.add("celebrate");
+function newNum(){
+targetNum='';
+let l=3+Math.floor(nsco/3);
 
-        setTimeout(function () {
-          gameCard.classList.remove("celebrate");
-        }, 600);
+for(let i=0;i<l;i++)
+targetNum+=Math.floor(Math.random()*10);
 
-      } else {
-        message.textContent =
-          "⏱️ Time's up! Your score: " + score;
-      }
-    }
-  </script>
+input='';
+nd.textContent=targetNum;
+}
+
+function numberStart(){
+clearInterval(nint);
+
+nsco=0;
+ntime=20;
+
+ns.textContent=0;
+nt.textContent='Time: 20s';
+nm.textContent='';
+
+numberStart.style.display='none';
+numberAgain.style.display='none';
+
+newNum();
+fx(500);
+
+nint=setInterval(()=>{
+ntime--;
+nt.textContent='Time: '+ntime+'s';
+
+if(ntime<=0){
+clearInterval(nint);
+
+nb.textContent=best('numberBest',nsco);
+nm.textContent="⏱️ Time's up! Score: "+nsco;
+
+numberStart.style.display='inline-block';
+numberAgain.style.display='inline-block';
+
+beep(300,.2);
+}
+},1000);
+}
+
+function key(k){
+if(!nint)return;
+
+if(k==='c')input='';
+else if(k==='b')input=input.slice(0,-1);
+else input+=k;
+
+if(input===targetNum){
+nsco++;
+ns.textContent=nsco;
+fx(750);
+newNum();
+}
+else if(input.length>=targetNum.length){
+fx(250);
+input='';
+}
+}
+
+nb.textContent=localStorage.getItem('numberBest')||0;
+
+/* COLOR MATCH */
+let colors=[
+['RED','#ef4444'],
+['BLUE','#3b82f6'],
+['GREEN','#22c55e'],
+['YELLOW','#eab308'],
+['PURPLE','#a855f7'],
+['ORANGE','#f97316']
+];
+
+let ans=null,csco=0,ctime=15,ci=null;
+
+function newColor(){
+ans=colors[Math.floor(Math.random()*colors.length)];
+
+colorBox.style.background=ans[1];
+
+let o=[ans];
+
+while(o.length<4){
+let c=colors[Math.floor(Math.random()*colors.length)];
+
+if(!o.includes(c))o.push(c);
+}
+
+o.sort(()=>Math.random()-.5);
+
+colorOptions.innerHTML='';
+
+o.forEach(c=>{
+let b=document.createElement('button');
+
+b.className='choice';
+b.textContent=c[0];
+b.style.background=c[1];
+
+b.onclick=()=>{
+if(!ci)return;
+
+if(c===ans){
+csco++;
+cs.textContent=csco;
+fx(700);
+newColor();
+}else{
+fx(250);
+}
+};
+
+colorOptions.appendChild(b);
+});
+}
+
+function colorStart(){
+clearInterval(ci);
+
+csco=0;
+ctime=15;
+
+cs.textContent=0;
+ct.textContent='Time: 15s';
+cm.textContent='';
+
+colorStart.style.display='none';
+colorAgain.style.display='none';
+
+newColor();
+fx(500);
+
+ci=setInterval(()=>{
+ctime--;
+ct.textContent='Time: '+ctime+'s';
+
+if(ctime<=0){
+clearInterval(ci);
+
+cb.textContent=best('colorBest',csco);
+cm.textContent="⏱️ Time's up! Score: "+csco;
+
+colorStart.style.display='inline-block';
+colorAgain.style.display='inline-block';
+
+beep(300,.2);
+}
+},1000);
+}
+
+cb.textContent=localStorage.getItem('colorBest')||0;
+
+/* TIC TAC TOE */
+let bd=[],over=false;
+
+function tttStart(){
+bd=['','','','','','','','',''];
+over=false;
+tmm.textContent='Your turn!';
+draw();
+}
+
+function draw(){
+board.innerHTML='';
+
+bd.forEach((v,i)=>{
+let b=document.createElement('button');
+
+b.className='cell';
+b.textContent=v;
+
+b.onclick=()=>play(i);
+
+board.appendChild(b);
+});
+}
+
+function win(p){
+return[
+[0,1,2],
+[3,4,5],
+[6,7,8],
+[0,3,6],
+[1,4,7],
+[2,5,8],
+[0,4,8],
+[2,4,6]
+].some(a=>a.every(i=>bd[i]===p));
+}
+
+function play(i){
+if(over||bd[i])return;
+
+bd[i]='X';
+fx(600);
+draw();
+
+if(win('X'))return end('🎉 You win!');
+if(bd.every(Boolean))return end('🤝 Draw!');
+
+tmm.textContent="Computer's turn...";
+setTimeout(cpu,400);
+}
+
+function cpu(){
+if(over)return;
+
+let e=bd.map((v,i)=>v?null:i).filter(i=>i!==null);
+
+if(!e.length)return;
+
+bd[e[Math.floor(Math.random()*e.length)]]='O';
+
+fx(400);
+draw();
+
+if(win('O'))return end('🤖 Computer wins!');
+if(bd.every(Boolean))return end('🤝 Draw!');
+
+tmm.textContent='Your turn!';
+}
+
+function end(m){
+over=true;
+tmm.textContent=m;
+beep(m.includes('win')?800:300,.2);
+}
+
+memoryStart();
+tttStart();
+</script>
 
 </body>
   </html>
