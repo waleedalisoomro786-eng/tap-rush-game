@@ -88,34 +88,25 @@
       cursor: not-allowed;
     }
 
-    #startButton {
+    #startButton,
+    #playAgainButton {
       margin-top: 28px;
       padding: 15px 32px;
       border: 0;
       border-radius: 14px;
-      background: #111827;
       color: white;
       font-size: 18px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    #startButton:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    #startButton {
+      background: #111827;
     }
 
     #playAgainButton {
       display: none;
-      margin-top: 12px;
-      padding: 13px 28px;
-      border: 0;
-      border-radius: 14px;
       background: #2563eb;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
     }
 
     #message {
@@ -132,7 +123,7 @@
     }
 
     .pop {
-      animation: pop 0.18s ease;
+      animation: pop 0.15s ease;
     }
 
     @keyframes pop {
@@ -211,7 +202,9 @@
     let score = 0;
     let timeLeft = 10;
     let gameRunning = false;
-    let timer;
+    let timer = null;
+
+    let audioContext = null;
 
     const scoreElement = document.getElementById("score");
     const bestElement = document.getElementById("best");
@@ -226,8 +219,61 @@
 
     bestElement.textContent = bestScore;
 
-    startButton.addEventListener("click", startGame);
-    playAgainButton.addEventListener("click", startGame);
+    function prepareSound() {
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContext) return;
+
+      if (!audioContext) {
+        audioContext = new AudioContext();
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+    }
+
+    function playTapSound() {
+      if (!audioContext) return;
+
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(
+        620,
+        audioContext.currentTime
+      );
+
+      gain.gain.setValueAtTime(
+        0.12,
+        audioContext.currentTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + 0.07
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+
+      oscillator.start();
+      oscillator.stop(
+        audioContext.currentTime + 0.07
+      );
+    }
+
+    startButton.addEventListener("click", function () {
+      prepareSound();
+      startGame();
+    });
+
+    playAgainButton.addEventListener("click", function () {
+      prepareSound();
+      startGame();
+    });
 
     tapButton.addEventListener("click", function () {
       if (!gameRunning) return;
@@ -235,49 +281,21 @@
       score++;
       scoreElement.textContent = score;
 
-      scoreElement.classList.remove("pop");
-      void scoreElement.offsetWidth;
-      scoreElement.classList.add("pop");
+      playTapSound();
 
       if (navigator.vibrate) {
         navigator.vibrate(12);
       }
 
-      playTapSound();
+      scoreElement.classList.remove("pop");
+      void scoreElement.offsetWidth;
+      scoreElement.classList.add("pop");
     });
-
-    function playTapSound() {
-      try {
-        const AudioContext =
-          window.AudioContext || window.webkitAudioContext;
-
-        if (!AudioContext) return;
-
-        const audio = new AudioContext();
-        const oscillator = audio.createOscillator();
-        const gain = audio.createGain();
-
-        oscillator.frequency.value = 520;
-        oscillator.type = "sine";
-
-        gain.gain.setValueAtTime(0.08, audio.currentTime);
-        gain.gain.exponentialRampToValueAtTime(
-          0.001,
-          audio.currentTime + 0.06
-        );
-
-        oscillator.connect(gain);
-        gain.connect(audio.destination);
-
-        oscillator.start();
-        oscillator.stop(audio.currentTime + 0.06);
-      } catch (error) {
-        // Sound is optional.
-      }
-    }
 
     function startGame() {
       clearInterval(timer);
+
+      prepareSound();
 
       score = 0;
       timeLeft = 10;
