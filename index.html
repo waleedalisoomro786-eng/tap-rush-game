@@ -14,88 +14,119 @@
       margin: 0;
       min-height: 100vh;
       font-family: Arial, sans-serif;
-      background: #f3f6fb;
+      background: linear-gradient(135deg, #eef2ff, #f8fafc);
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .game {
-      width: min(92%, 420px);
-      background: white;
-      border-radius: 24px;
-      padding: 24px;
+      width: min(100%, 430px);
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 28px;
+      padding: 28px 22px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
     }
 
     h1 {
-      margin: 5px 0;
-      font-size: 36px;
+      margin: 0;
+      font-size: 38px;
     }
 
     .subtitle {
       color: #666;
-      margin-bottom: 20px;
+      margin-top: 8px;
+      margin-bottom: 22px;
     }
 
     .score-box {
       display: flex;
       justify-content: space-around;
-      margin: 20px 0;
-      font-size: 20px;
+      margin: 18px 0;
+    }
+
+    .score-label {
+      color: #666;
+      font-size: 16px;
     }
 
     .score {
+      font-size: 34px;
       font-weight: bold;
-      font-size: 30px;
+      margin-top: 4px;
     }
 
     #timer {
-      font-size: 22px;
-      margin: 15px 0;
+      font-size: 21px;
+      font-weight: bold;
+      margin: 18px 0;
     }
 
     #tapButton {
-      width: 220px;
-      height: 220px;
+      width: min(70vw, 240px);
+      height: min(70vw, 240px);
       border-radius: 50%;
-      border: none;
-      background: #111;
+      border: 0;
+      background: #111827;
       color: white;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 8px 0 #555;
+      box-shadow: 0 9px 0 #4b5563;
       touch-action: manipulation;
+      transition: transform 0.08s;
     }
 
-    #tapButton:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #555;
+    #tapButton:active:not(:disabled) {
+      transform: translateY(7px);
+      box-shadow: 0 2px 0 #4b5563;
+    }
+
+    #tapButton:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     #startButton {
-      margin-top: 25px;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      background: #111;
+      margin-top: 28px;
+      padding: 15px 32px;
+      border: 0;
+      border-radius: 14px;
+      background: #111827;
       color: white;
       font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
     }
 
+    #startButton:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     #message {
-      min-height: 24px;
+      min-height: 28px;
       margin-top: 18px;
       font-weight: bold;
+      font-size: 17px;
     }
 
     .footer {
       margin-top: 20px;
-      font-size: 13px;
       color: #888;
+      font-size: 13px;
+    }
+
+    .pop {
+      animation: pop 0.18s ease;
+    }
+
+    @keyframes pop {
+      50% {
+        transform: scale(1.06);
+      }
     }
   </style>
 </head>
@@ -108,15 +139,17 @@
     <div class="subtitle">Tap as fast as you can!</div>
 
     <div class="score-box">
+
       <div>
-        Score
+        <div class="score-label">Score</div>
         <div id="score" class="score">0</div>
       </div>
 
       <div>
-        Best
+        <div class="score-label">Best</div>
         <div id="best" class="score">0</div>
       </div>
+
     </div>
 
     <div id="timer">Time: 10s</div>
@@ -148,7 +181,7 @@
     const startButton = document.getElementById("startButton");
     const message = document.getElementById("message");
 
-    let bestScore = Number(localStorage.getItem("tapRushBest") || 0);
+    let bestScore = Number(localStorage.getItem("tapRushBest")) || 0;
     bestElement.textContent = bestScore;
 
     startButton.addEventListener("click", startGame);
@@ -158,6 +191,14 @@
 
       score++;
       scoreElement.textContent = score;
+
+      scoreElement.classList.remove("pop");
+      void scoreElement.offsetWidth;
+      scoreElement.classList.add("pop");
+
+      if (navigator.vibrate) {
+        navigator.vibrate(12);
+      }
     });
 
     function startGame() {
@@ -194,6 +235,7 @@
 
       if (score > bestScore) {
         bestScore = score;
+
         localStorage.setItem("tapRushBest", bestScore);
         bestElement.textContent = bestScore;
 
@@ -205,4 +247,4 @@
   </script>
 
 </body>
-</html>
+    </html>
