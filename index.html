@@ -4,52 +4,252 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tap Rush Arcade</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#111827;padding:15px}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#eef2ff,#f8fafc);
+  color:#111827;
+  padding:15px;
+}
+
 .app{max-width:480px;margin:auto}
+
 header{text-align:center;padding:15px 5px}
+
 h1{margin:0;font-size:31px}
-header p{color:#64748b;margin:7px}
+
+header p{
+  color:#64748b;
+  margin:7px;
+}
+
 .screen{display:none}
 .active{display:block}
-.card{background:#fff;border-radius:22px;padding:18px;margin-bottom:15px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.game{border:0;border-radius:18px;background:#f1f5f9;padding:15px 8px;min-height:120px;font-size:16px;font-weight:bold}
-.game b{display:block;font-size:36px;margin-bottom:8px}
-.game small{display:block;color:#64748b;margin-top:5px;font-weight:normal}
-.top{display:flex;justify-content:space-between;margin-bottom:10px}
-.back,.btn,.key{border:0;border-radius:12px;padding:12px 18px;font-weight:bold;cursor:pointer}
+
+.card{
+  background:#fff;
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.game{
+  border:0;
+  border-radius:18px;
+  background:#f1f5f9;
+  padding:15px 8px;
+  min-height:120px;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.game b{
+  display:block;
+  font-size:36px;
+  margin-bottom:8px;
+}
+
+.game small{
+  display:block;
+  color:#64748b;
+  margin-top:5px;
+  font-weight:normal;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.back,.btn,.key{
+  border:0;
+  border-radius:12px;
+  padding:12px 18px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
 .back,.key{background:#e5e7eb}
-.btn{background:#111827;color:#fff;margin:4px}
+
+.btn{
+  background:#111827;
+  color:#fff;
+  margin:4px;
+}
+
 .blue{background:#2563eb}
+
 h2{text-align:center;margin:8px}
-.sub{text-align:center;color:#64748b}
-.stats{display:flex;justify-content:space-around;text-align:center;margin:15px}
-.stats b{display:block;font-size:27px}
+
+.sub{
+  text-align:center;
+  color:#64748b;
+}
+
+.stats{
+  display:flex;
+  justify-content:space-around;
+  text-align:center;
+  margin:15px;
+}
+
+.stats b{
+  display:block;
+  font-size:27px;
+}
+
 .stats small{color:#64748b}
-.timer{text-align:center;font-weight:bold;font-size:19px}
-.message{text-align:center;min-height:28px;font-weight:bold;margin:12px}
-.tap{display:block;width:220px;height:220px;border:0;border-radius:50%;background:#111827;color:#fff;font-size:32px;font-weight:bold;margin:20px auto}
+
+.timer{
+  text-align:center;
+  font-weight:bold;
+  font-size:19px;
+}
+
+.message{
+  text-align:center;
+  min-height:28px;
+  font-weight:bold;
+  margin:12px;
+}
+
+.tap{
+  display:block;
+  width:220px;
+  height:220px;
+  border:0;
+  border-radius:50%;
+  background:#111827;
+  color:#fff;
+  font-size:32px;
+  font-weight:bold;
+  margin:20px auto;
+}
+
 .tap:active{transform:scale(.96)}
-.area{height:300px;background:#f1f5f9;border-radius:18px;position:relative;margin:15px 0}
-.target{position:absolute;width:60px;height:60px;border:0;border-radius:50%;background:#111827;display:none}
-.memory{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}
-.mem{aspect-ratio:1;border:0;border-radius:12px;background:#111827;color:#fff;font-size:25px}
-.open{background:#e5e7eb;color:#111827}
-.number{text-align:center;font-size:40px;font-weight:bold;margin:15px;min-height:50px}
-.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:auto}
-.key{font-size:21px;padding:17px}
-.colorbox{width:170px;height:170px;border-radius:22px;margin:20px auto}
-.colors{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.choice{height:60px;border:0;border-radius:13px;font-weight:bold}
-.ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:320px;margin:20px auto}
-.cell{aspect-ratio:1;border:0;border-radius:13px;background:#e5e7eb;font-size:40px;font-weight:bold}
-footer{text-align:center;color:#94a3b8;font-size:12px;padding:12px}
+
+.area{
+  height:300px;
+  background:#f1f5f9;
+  border-radius:18px;
+  position:relative;
+  margin:15px 0;
+}
+
+.target{
+  position:absolute;
+  width:60px;
+  height:60px;
+  border:0;
+  border-radius:50%;
+  background:#111827;
+  display:none;
+}
+
+.memory{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:15px 0;
+}
+
+.mem{
+  aspect-ratio:1;
+  border:0;
+  border-radius:12px;
+  background:#111827;
+  color:#fff;
+  font-size:25px;
+}
+
+.open{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.number{
+  text-align:center;
+  font-size:40px;
+  font-weight:bold;
+  margin:15px;
+  min-height:50px;
+}
+
+.keys{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-width:320px;
+  margin:auto;
+}
+
+.key{
+  font-size:21px;
+  padding:17px;
+}
+
+.colorbox{
+  width:170px;
+  height:170px;
+  border-radius:22px;
+  margin:20px auto;
+}
+
+.colors{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.choice{
+  height:60px;
+  border:0;
+  border-radius:13px;
+  font-weight:bold;
+  color:#fff;
+}
+
+.ttt{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-width:320px;
+  margin:20px auto;
+}
+
+.cell{
+  aspect-ratio:1;
+  border:0;
+  border-radius:13px;
+  background:#e5e7eb;
+  font-size:40px;
+  font-weight:bold;
+}
+
+footer{
+  text-align:center;
+  color:#94a3b8;
+  font-size:12px;
+  padding:12px;
+}
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header>
@@ -57,609 +257,819 @@ footer{text-align:center;color:#94a3b8;font-size:12px;padding:12px}
 <p>6 Mini Games · Play · Score · Challenge</p>
 </header>
 
+<!-- HOME -->
 <section id="home" class="screen active">
 <div class="card">
 <h2>Choose Your Game</h2>
+
 <div class="grid">
-<button class="game" onclick="openGame('tap')"><b>⚡</b>Tap Rush<small>Tap as fast as you can</small></button>
-<button class="game" onclick="openGame('target')"><b>🎯</b>Target Hit<small>Hit the targets</small></button>
-<button class="game" onclick="openGame('memory')"><b>🧠</b>Memory Match<small>Find the pairs</small></button>
-<button class="game" onclick="openGame('number')"><b>🔢</b>Number Rush<small>Use the keypad</small></button>
-<button class="game" onclick="openGame('color')"><b>🎨</b>Color Match<small>Pick the color</small></button>
-<button class="game" onclick="openGame('ttt')"><b>❌</b>Tic-Tac-Toe<small>Beat the computer</small></button>
+
+<button class="game" onclick="openGame('tap')">
+<b>⚡</b>
+Tap Rush
+<small>Tap as fast as you can</small>
+</button>
+
+<button class="game" onclick="openGame('target')">
+<b>🎯</b>
+Target Hit
+<small>Hit the targets</small>
+</button>
+
+<button class="game" onclick="openGame('memory')">
+<b>🧠</b>
+Memory Match
+<small>Find the pairs</small>
+</button>
+
+<button class="game" onclick="openGame('number')">
+<b>🔢</b>
+Number Rush
+<small>Use the keypad</small>
+</button>
+
+<button class="game" onclick="openGame('color')">
+<b>🎨</b>
+Color Match
+<small>Pick the color</small>
+</button>
+
+<button class="game" onclick="openGame('ttt')">
+<b>❌</b>
+Tic-Tac-Toe
+<small>Beat the computer</small>
+</button>
+
 </div>
 </div>
 </section>
 
+<!-- TAP RUSH -->
 <section id="tap" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>⚡ Tap Rush</h2>
 <div class="sub">Tap as fast as you can!</div>
+
 <div class="stats">
-<div><small>Score</small><b id="ts">0</b></div>
-<div><small>Best</small><b id="tb">0</b></div>
+<div><small>Score</small><b id="tapScore">0</b></div>
+<div><small>Best</small><b id="tapBest">0</b></div>
 </div>
-<div class="timer" id="tt">Time: 10s</div>
-<button class="tap" id="tapBtn" disabled>TAP!</button>
+
+<div class="timer" id="tapTimer">Time: 10s</div>
+
+<button class="tap" id="tapButton" disabled>TAP!</button>
+
 <div style="text-align:center">
-<button class="btn" id="tapStart" onclick="tapStart()">START GAME</button>
-<button class="btn blue" id="tapAgain" style="display:none" onclick="tapStart()">PLAY AGAIN</button>
+<button class="btn" id="tapStartButton" onclick="startTapGame()">START GAME</button>
+<button class="btn blue" id="tapAgainButton" style="display:none" onclick="startTapGame()">PLAY AGAIN</button>
 </div>
-<div class="message" id="tm"></div>
+
+<div class="message" id="tapMessage"></div>
+
 </div>
 </section>
 
+<!-- TARGET HIT -->
 <section id="target" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>🎯 Target Hit</h2>
 <div class="sub">Hit as many targets as possible!</div>
+
 <div class="stats">
-<div><small>Score</small><b id="xs">0</b></div>
-<div><small>Best</small><b id="xb">0</b></div>
+<div><small>Score</small><b id="targetScore">0</b></div>
+<div><small>Best</small><b id="targetBest">0</b></div>
 </div>
-<div class="timer" id="xt">Time: 15s</div>
-<div class="area" id="area">
-<button class="target" id="targetBtn"></button>
+
+<div class="timer" id="targetTimer">Time: 15s</div>
+
+<div class="area" id="targetArea">
+<button class="target" id="targetButton"></button>
 </div>
+
 <div style="text-align:center">
-<button class="btn" id="targetStart" onclick="targetStart()">START GAME</button>
-<button class="btn blue" id="targetAgain" style="display:none" onclick="targetStart()">PLAY AGAIN</button>
+<button class="btn" id="targetStartButton" onclick="startTargetGame()">START GAME</button>
+<button class="btn blue" id="targetAgainButton" style="display:none" onclick="startTargetGame()">PLAY AGAIN</button>
 </div>
-<div class="message" id="xm"></div>
+
+<div class="message" id="targetMessage"></div>
+
 </div>
 </section>
 
+<!-- MEMORY -->
 <section id="memory" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>🧠 Memory Match</h2>
 <div class="sub">Match all the pairs!</div>
+
 <div class="stats">
-<div><small>Moves</small><b id="mm">0</b></div>
-<div><small>Best</small><b id="mb">-</b></div>
+<div><small>Moves</small><b id="memoryMoves">0</b></div>
+<div><small>Best</small><b id="memoryBest">-</b></div>
 </div>
+
 <div class="memory" id="memoryGrid"></div>
+
 <div style="text-align:center">
-<button class="btn blue" onclick="memoryStart()">NEW GAME</button>
+<button class="btn blue" onclick="startMemoryGame()">NEW GAME</button>
 </div>
-<div class="message" id="mmm"></div>
+
+<div class="message" id="memoryMessage"></div>
+
 </div>
 </section>
 
+<!-- NUMBER -->
 <section id="number" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>🔢 Number Rush</h2>
 <div class="sub">Type the shown number!</div>
+
 <div class="stats">
-<div><small>Score</small><b id="ns">0</b></div>
-<div><small>Best</small><b id="nb">0</b></div>
+<div><small>Score</small><b id="numberScore">0</b></div>
+<div><small>Best</small><b id="numberBest">0</b></div>
 </div>
-<div class="timer" id="nt">Time: 20s</div>
-<div class="number" id="nd">---</div>
+
+<div class="timer" id="numberTimer">Time: 20s</div>
+
+<div class="number" id="numberDisplay">---</div>
 
 <div class="keys">
-<button class="key" onclick="key('1')">1</button>
-<button class="key" onclick="key('2')">2</button>
-<button class="key" onclick="key('3')">3</button>
-<button class="key" onclick="key('4')">4</button>
-<button class="key" onclick="key('5')">5</button>
-<button class="key" onclick="key('6')">6</button>
-<button class="key" onclick="key('7')">7</button>
-<button class="key" onclick="key('8')">8</button>
-<button class="key" onclick="key('9')">9</button>
-<button class="key" onclick="key('c')">C</button>
-<button class="key" onclick="key('0')">0</button>
-<button class="key" onclick="key('b')">⌫</button>
+
+<button class="key" onclick="pressKey('1')">1</button>
+<button class="key" onclick="pressKey('2')">2</button>
+<button class="key" onclick="pressKey('3')">3</button>
+
+<button class="key" onclick="pressKey('4')">4</button>
+<button class="key" onclick="pressKey('5')">5</button>
+<button class="key" onclick="pressKey('6')">6</button>
+
+<button class="key" onclick="pressKey('7')">7</button>
+<button class="key" onclick="pressKey('8')">8</button>
+<button class="key" onclick="pressKey('9')">9</button>
+
+<button class="key" onclick="pressKey('c')">C</button>
+<button class="key" onclick="pressKey('0')">0</button>
+<button class="key" onclick="pressKey('b')">⌫</button>
+
 </div>
 
 <div style="text-align:center;margin-top:12px">
-<button class="btn" id="numberStart" onclick="numberStart()">START GAME</button>
-<button class="btn blue" id="numberAgain" style="display:none" onclick="numberStart()">PLAY AGAIN</button>
+<button class="btn" id="numberStartButton" onclick="startNumberGame()">START GAME</button>
+<button class="btn blue" id="numberAgainButton" style="display:none" onclick="startNumberGame()">PLAY AGAIN</button>
 </div>
-<div class="message" id="nm"></div>
+
+<div class="message" id="numberMessage"></div>
+
 </div>
 </section>
 
+<!-- COLOR -->
 <section id="color" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>🎨 Color Match</h2>
 <div class="sub">Choose the correct color!</div>
+
 <div class="stats">
-<div><small>Score</small><b id="cs">0</b></div>
-<div><small>Best</small><b id="cb">0</b></div>
+<div><small>Score</small><b id="colorScore">0</b></div>
+<div><small>Best</small><b id="colorBest">0</b></div>
 </div>
-<div class="timer" id="ct">Time: 15s</div>
+
+<div class="timer" id="colorTimer">Time: 15s</div>
+
 <div class="colorbox" id="colorBox"></div>
+
 <div class="colors" id="colorOptions"></div>
 
 <div style="text-align:center">
-<button class="btn" id="colorStart" onclick="colorStart()">START GAME</button>
-<button class="btn blue" id="colorAgain" style="display:none" onclick="colorStart()">PLAY AGAIN</button>
+<button class="btn" id="colorStartButton" onclick="startColorGame()">START GAME</button>
+<button class="btn blue" id="colorAgainButton" style="display:none" onclick="startColorGame()">PLAY AGAIN</button>
 </div>
-<div class="message" id="cm"></div>
+
+<div class="message" id="colorMessage"></div>
+
 </div>
 </section>
 
+<!-- TIC TAC TOE -->
 <section id="ttt" class="screen">
 <div class="card">
-<div class="top"><button class="back" onclick="home()">← Games</button></div>
+
+<div class="top">
+<button class="back" onclick="goHome()">← Games</button>
+</div>
+
 <h2>❌⭕ Tic-Tac-Toe</h2>
 <div class="sub">You are X · Computer is O</div>
-<div class="ttt" id="board"></div>
-<div class="message" id="tmm">Your turn!</div>
+
+<div class="ttt" id="tttBoard"></div>
+
 <div style="text-align:center">
-<button class="btn blue" onclick="tttStart()">NEW GAME</button>
+<button class="btn blue" onclick="startTTT()">NEW GAME</button>
 </div>
+
+<div class="message" id="tttMessage">Your turn!</div>
+
 </div>
 </section>
 
-<footer>Made with care · Tap Rush Arcade</footer>
+<footer>
+Made with care · Tap Rush Arcade
+</footer>
+
 </div>
 
 <script>
-let AC=null;
+/* SOUND */
+let audioCtx=null;
 
-function beep(f=600,d=.08){
-try{
-let A=window.AudioContext||window.webkitAudioContext;
-if(!A)return;
-if(!AC)AC=new A;
-if(AC.state==='suspended')AC.resume();
-let o=AC.createOscillator();
-let g=AC.createGain();
-o.frequency.value=f;
-o.type='sine';
-g.gain.setValueAtTime(.12,AC.currentTime);
-g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);
-o.connect(g);
-g.connect(AC.destination);
-o.start();
-o.stop(AC.currentTime+d);
-}catch(e){}
+function sound(freq=500,duration=.12){
+  try{
+    if(!audioCtx){
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    }
+
+    if(audioCtx.state==="suspended"){
+      audioCtx.resume();
+    }
+
+    const osc=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+
+    osc.frequency.value=freq;
+    osc.type="sine";
+
+    gain.gain.setValueAtTime(.08,audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      audioCtx.currentTime+duration
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime+duration);
+  }catch(e){}
 }
 
-function buzz(){
-if(navigator.vibrate)navigator.vibrate(15);
-}
+/* NAVIGATION */
+let timers=[];
 
-function fx(f=600){
-beep(f);
-buzz();
-}
-
-function best(k,v){
-let b=+localStorage.getItem(k)||0;
-if(v>b)localStorage.setItem(k,v);
-return Math.max(b,v);
+function clearAllTimers(){
+  timers.forEach(t=>clearInterval(t));
+  timers=[];
 }
 
 function openGame(id){
-document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-if(id==='memory')memoryStart();
-if(id==='ttt')tttStart();
-window.scrollTo(0,0);
-fx(500);
+  clearAllTimers();
+
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  const screen=document.getElementById(id);
+
+  if(screen){
+    screen.classList.add("active");
+  }
+
+  sound(500,.08);
 }
 
-function home(){
-clearInterval(ti);
-clearInterval(xi);
-clearInterval(ni);
-clearInterval(ci);
-openGame('home');
+function goHome(){
+  clearAllTimers();
+
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  document.getElementById("home").classList.add("active");
+
+  sound(350,.08);
+}
+
+/* BEST SCORE */
+function getBest(key){
+  return Number(localStorage.getItem(key)||0);
+}
+
+function saveBest(key,score){
+  const old=getBest(key);
+
+  if(score>old){
+    localStorage.setItem(key,score);
+    return score;
+  }
+
+  return old;
 }
 
 /* TAP RUSH */
-let score=0,time=10,ti;
+let tapScore=0;
+let tapTime=10;
+let tapRunning=false;
 
-tapBtn.onclick=()=>{
-if(time>0){
-score++;
-ts.textContent=score;
-fx(650);
+function startTapGame(){
+  clearAllTimers();
+
+  tapScore=0;
+  tapTime=10;
+  tapRunning=true;
+
+  tapScoreEl.textContent="0";
+  tapTimer.textContent="Time: 10s";
+  tapMessage.textContent="";
+
+  tapButton.disabled=false;
+  tapStartButton.style.display="none";
+  tapAgainButton.style.display="none";
+
+  sound(700,.12);
+
+  const timer=setInterval(()=>{
+    tapTime--;
+
+    tapTimer.textContent="Time: "+tapTime+"s";
+
+    if(tapTime<=0){
+      clearInterval(timer);
+      timers=timers.filter(x=>x!==timer);
+
+      tapRunning=false;
+      tapButton.disabled=true;
+
+      const old=getBest("tapBest");
+      const best=saveBest("tapBest",tapScore);
+
+      tapBest.textContent=best;
+
+      if(tapScore>old){
+        tapMessage.textContent="🎉 New Best Score: "+tapScore+"!";
+      }else{
+        tapMessage.textContent="⏱️ Time's up! Your score: "+tapScore;
+      }
+
+      tapStartButton.style.display="inline-block";
+      tapAgainButton.style.display="inline-block";
+
+      sound(250,.25);
+    }
+  },1000);
+
+  timers.push(timer);
 }
+
+tapButton.onclick=()=>{
+  if(!tapRunning)return;
+
+  tapScore++;
+  tapScoreEl.textContent=tapScore;
+
+  sound(700,.05);
 };
 
-function tapStart(){
-clearInterval(ti);
-score=0;
-time=10;
-ts.textContent=0;
-tt.textContent='Time: 10s';
-tm.textContent='';
-tapBtn.disabled=false;
-tapStart.style.display='none';
-tapAgain.style.display='none';
-fx(500);
-
-ti=setInterval(()=>{
-time--;
-tt.textContent='Time: '+time+'s';
-
-if(time<=0){
-clearInterval(ti);
-tapBtn.disabled=true;
-
-let old=+localStorage.getItem('tapBest')||0;
-let b=best('tapBest',score);
-
-tb.textContent=b;
-tm.textContent=score>old?'🎉 New Best Score: '+score+'!':"⏱️ Time's up! Your score: "+score;
-
-tapStart.style.display='inline-block';
-tapAgain.style.display='inline-block';
-beep(300,.2);
-}
-},1000);
-}
-
-tb.textContent=localStorage.getItem('tapBest')||0;
+tapBest.textContent=getBest("tapBest");
 
 /* TARGET HIT */
-let sc=0,xtime=15,xi;
+let targetScore=0;
+let targetTime=15;
+let targetRunning=false;
 
 function moveTarget(){
-let a=area,b=targetBtn;
-b.style.left=Math.random()*(a.clientWidth-60)+'px';
-b.style.top=Math.random()*(a.clientHeight-60)+'px';
-b.style.display='block';
+  const area=document.getElementById("targetArea");
+  const button=document.getElementById("targetButton");
+
+  const maxX=area.clientWidth-60;
+  const maxY=area.clientHeight-60;
+
+  button.style.left=Math.max(0,Math.random()*maxX)+"px";
+  button.style.top=Math.max(0,Math.random()*maxY)+"px";
+  button.style.display="block";
 }
 
-targetBtn.onclick=()=>{
-if(xtime>0){
-sc++;
-xs.textContent=sc;
-fx(700);
-moveTarget();
-}
+targetButton.onclick=()=>{
+  if(!targetRunning)return;
+
+  targetScore++;
+  targetScoreEl.textContent=targetScore;
+
+  sound(750,.06);
+  moveTarget();
 };
 
-function targetStart(){
-clearInterval(xi);
-sc=0;
-xtime=15;
-xs.textContent=0;
-xt.textContent='Time: 15s';
-xm.textContent='';
-targetStart.style.display='none';
-targetAgain.style.display='none';
-moveTarget();
-fx(500);
+function startTargetGame(){
+  clearAllTimers();
 
-xi=setInterval(()=>{
-xtime--;
-xt.textContent='Time: '+xtime+'s';
+  targetScore=0;
+  targetTime=15;
+  targetRunning=true;
 
-if(xtime<=0){
-clearInterval(xi);
-targetBtn.style.display='none';
-xb.textContent=best('targetBest',sc);
-xm.textContent="⏱️ Time's up! Score: "+sc;
-targetStart.style.display='inline-block';
-targetAgain.style.display='inline-block';
-beep(300,.2);
+  targetScoreEl.textContent="0";
+  targetTimer.textContent="Time: 15s";
+  targetMessage.textContent="";
+
+  targetStartButton.style.display="none";
+  targetAgainButton.style.display="none";
+
+  moveTarget();
+  sound(700,.12);
+
+  const timer=setInterval(()=>{
+    targetTime--;
+
+    targetTimer.textContent="Time: "+targetTime+"s";
+
+    if(targetTime<=0){
+      clearInterval(timer);
+      timers=timers.filter(x=>x!==timer);
+
+      targetRunning=false;
+      targetButton.style.display="none";
+
+      const best=saveBest("targetBest",targetScore);
+      targetBest.textContent=best;
+
+      targetMessage.textContent="⏱️ Time's up! Score: "+targetScore;
+
+      targetStartButton.style.display="inline-block";
+      targetAgainButton.style.display="inline-block";
+
+      sound(250,.25);
+    }
+  },1000);
+
+  timers.push(timer);
 }
-},1000);
-}
 
-xb.textContent=localStorage.getItem('targetBest')||0;
+targetBest.textContent=getBest("targetBest");
 
 /* MEMORY MATCH */
-let first=null,lock=false,moves=0,matches=0;
+let firstCard=null;
+let memoryLock=false;
+let memoryMoveCount=0;
+let memoryMatches=0;
 
-function memoryStart(){
-let a=['🍎','🍎','🚀','🚀','⭐','⭐','🎮','🎮','🔥','🔥','🎯','🎯','💎','💎','⚡','⚡'];
+function startMemoryGame(){
+  clearAllTimers();
 
-a.sort(()=>Math.random()-.5);
+  const symbols=[
+    "🍎","🍎","🚀","🚀",
+    "⭐","⭐","🎮","🎮",
+    "🔥","🔥","🎯","🎯",
+    "💎","💎","⚡","⚡"
+  ];
 
-first=null;
-lock=false;
-moves=0;
-matches=0;
-mm.textContent=0;
-mmm.textContent='';
-memoryGrid.innerHTML='';
+  symbols.sort(()=>Math.random()-.5);
 
-a.forEach(s=>{
-let b=document.createElement('button');
-b.className='mem';
-b.textContent='?';
-b.dataset.s=s;
+  firstCard=null;
+  memoryLock=false;
+  memoryMoveCount=0;
+  memoryMatches=0;
 
-b.onclick=()=>flip(b);
+  memoryMoves.textContent="0";
+  memoryMessage.textContent="";
+  memoryGrid.innerHTML="";
 
-memoryGrid.appendChild(b);
-});
+  symbols.forEach(symbol=>{
+    const card=document.createElement("button");
+
+    card.className="mem";
+    card.textContent="?";
+    card.dataset.symbol=symbol;
+
+    card.onclick=()=>flipMemory(card);
+
+    memoryGrid.appendChild(card);
+  });
+
+  sound(600,.1);
 }
 
-function flip(b){
-if(lock||b.classList.contains('open'))return;
+function flipMemory(card){
+  if(memoryLock)return;
+  if(card.classList.contains("open"))return;
 
-b.classList.add('open');
-b.textContent=b.dataset.s;
-fx(550);
+  card.classList.add("open");
+  card.textContent=card.dataset.symbol;
 
-if(!first){
-first=b;
-return;
+  sound(550,.06);
+
+  if(!firstCard){
+    firstCard=card;
+    return;
+  }
+
+  memoryMoveCount++;
+  memoryMoves.textContent=memoryMoveCount;
+
+  if(firstCard.dataset.symbol===card.dataset.symbol){
+    memoryMatches++;
+    firstCard=null;
+
+    sound(800,.12);
+
+    if(memoryMatches===8){
+      const old=getBest("memoryBest");
+
+      if(old===0 || memoryMoveCount<old){
+        localStorage.setItem("memoryBest",memoryMoveCount);
+      }
+
+      memoryBest.textContent=getBest("memoryBest");
+      memoryMessage.textContent="🎉 All pairs matched!";
+      sound(900,.25);
+    }
+
+  }else{
+    const first=firstCard;
+
+    memoryLock=true;
+
+    setTimeout(()=>{
+      first.classList.remove("open");
+      card.classList.remove("open");
+
+      first.textContent="?";
+      card.textContent="?";
+
+      firstCard=null;
+      memoryLock=false;
+    },650);
+  }
 }
 
-moves++;
-mm.textContent=moves;
+memoryBest.textContent=
+  getBest("memoryBest")||"-";
 
-if(first.dataset.s===b.dataset.s){
-matches++;
-first=null;
-
-if(matches===8){
-let old=+localStorage.getItem('memoryBest')||999;
-
-if(moves<old)localStorage.setItem('memoryBest',moves);
-
-mb.textContent=Math.min(moves,old);
-mmm.textContent='🎉 All pairs matched!';
-beep(800,.2);
-}
-}else{
-let f=first;
-lock=true;
-
-setTimeout(()=>{
-f.classList.remove('open');
-b.classList.remove('open');
-f.textContent='?';
-b.textContent='?';
-first=null;
-lock=false;
-},650);
-}
-}
-
-if(localStorage.getItem('memoryBest'))
-mb.textContent=localStorage.getItem('memoryBest');
+startMemoryGame();
 
 /* NUMBER RUSH */
-let nsco=0,ntime=20,nint=null,targetNum='',input='';
+let numberScoreValue=0;
+let numberTime=20;
+let numberRunning=false;
+let numberTarget="";
+let numberInput="";
 
-function newNum(){
-targetNum='';
-let l=3+Math.floor(nsco/3);
+function createNumber(){
+  numberTarget="";
 
-for(let i=0;i<l;i++)
-targetNum+=Math.floor(Math.random()*10);
+  const length=3+
+    Math.floor(numberScoreValue/3);
 
-input='';
-nd.textContent=targetNum;
+  for(let i=0;i<length;i++){
+    numberTarget+=Math.floor(Math.random()*10);
+  }
+
+  numberInput="";
+  numberDisplay.textContent=numberTarget;
 }
 
-function numberStart(){
-clearInterval(nint);
+function startNumberGame(){
+  clearAllTimers();
 
-nsco=0;
-ntime=20;
+  numberScoreValue=0;
+  numberTime=20;
+  numberRunning=true;
 
-ns.textContent=0;
-nt.textContent='Time: 20s';
-nm.textContent='';
+  numberScore.textContent="0";
+  numberTimer.textContent="Time: 20s";
+  numberMessage.textContent="";
 
-numberStart.style.display='none';
-numberAgain.style.display='none';
+  numberStartButton.style.display="none";
+  numberAgainButton.style.display="none";
 
-newNum();
-fx(500);
+  createNumber();
+  sound(650,.12);
 
-nint=setInterval(()=>{
-ntime--;
-nt.textContent='Time: '+ntime+'s';
+  const timer=setInterval(()=>{
+    numberTime--;
 
-if(ntime<=0){
-clearInterval(nint);
+    numberTimer.textContent="Time: "+numberTime+"s";
 
-nb.textContent=best('numberBest',nsco);
-nm.textContent="⏱️ Time's up! Score: "+nsco;
+    if(numberTime<=0){
+      clearInterval(timer);
+      timers=timers.filter(x=>x!==timer);
 
-numberStart.style.display='inline-block';
-numberAgain.style.display='inline-block';
+      numberRunning=false;
 
-beep(300,.2);
-}
-},1000);
-}
+      const best=saveBest(
+        "numberBest",
+        numberScoreValue
+      );
 
-function key(k){
-if(!nint)return;
+      numberBest.textContent=best;
 
-if(k==='c')input='';
-else if(k==='b')input=input.slice(0,-1);
-else input+=k;
+      numberMessage.textContent=
+        "⏱️ Time's up! Score: "+numberScoreValue;
 
-if(input===targetNum){
-nsco++;
-ns.textContent=nsco;
-fx(750);
-newNum();
-}
-else if(input.length>=targetNum.length){
-fx(250);
-input='';
-}
+      numberStartButton.style.display="inline-block";
+      numberAgainButton.style.display="inline-block";
+
+      sound(250,.25);
+    }
+  },1000);
+
+  timers.push(timer);
 }
 
-nb.textContent=localStorage.getItem('numberBest')||0;
+function pressKey(keyValue){
+  if(!numberRunning)return;
+
+  if(keyValue==="c"){
+    numberInput="";
+    sound(300,.05);
+    return;
+  }
+
+  if(keyValue==="b"){
+    numberInput=numberInput.slice(0,-1);
+    sound(350,.05);
+    return;
+  }
+
+  numberInput+=keyValue;
+  sound(600,.04);
+
+  if(numberInput===numberTarget){
+    numberScoreValue++;
+    numberScore.textContent=numberScoreValue;
+
+    sound(850,.1);
+    createNumber();
+
+  }else if(numberInput.length>=numberTarget.length){
+    sound(200,.12);
+    numberInput="";
+  }
+}
+
+numberBest.textContent=getBest("numberBest");
 
 /* COLOR MATCH */
-let colors=[
-['RED','#ef4444'],
-['BLUE','#3b82f6'],
-['GREEN','#22c55e'],
-['YELLOW','#eab308'],
-['PURPLE','#a855f7'],
-['ORANGE','#f97316']
+const colorList=[
+  ["RED","#ef4444"],
+  ["BLUE","#3b82f6"],
+  ["GREEN","#22c55e"],
+  ["YELLOW","#eab308"],
+  ["PURPLE","#a855f7"],
+  ["ORANGE","#f97316"]
 ];
 
-let ans=null,csco=0,ctime=15,ci=null;
+let colorAnswer=null;
+let colorScoreValue=0;
+let colorTime=15;
+let colorRunning=false;
 
-function newColor(){
-ans=colors[Math.floor(Math.random()*colors.length)];
+function createColorRound(){
+  colorAnswer=
+    colorList[
+      Math.floor(Math.random()*colorList.length)
+    ];
 
-colorBox.style.background=ans[1];
+  colorBox.style.background=colorAnswer[1];
 
-let o=[ans];
+  let options=[colorAnswer];
 
-while(o.length<4){
-let c=colors[Math.floor(Math.random()*colors.length)];
+  while(options.length<4){
+    const candidate=
+      colorList[
+        Math.floor(Math.random()*colorList.length)
+      ];
 
-if(!o.includes(c))o.push(c);
+    if(!options.includes(candidate)){
+      options.push(candidate);
+    }
+  }
+
+  options.sort(()=>Math.random()-.5);
+
+  colorOptions.innerHTML="";
+
+  options.forEach(color=>{
+    const button=document.createElement("button");
+
+    button.className="choice";
+    button.textContent=color[0];
+    button.style.background=color[1];
+
+    button.onclick=()=>{
+      if(!colorRunning)return;
+
+      if(color===colorAnswer){
+        colorScoreValue++;
+        colorScore.textContent=colorScoreValue;
+
+        sound(800,.08);
+        createColorRound();
+      }else{
+        sound(220,.12);
+      }
+    };
+
+    colorOptions.appendChild(button);
+  });
 }
 
-o.sort(()=>Math.random()-.5);
+function startColorGame(){
+  clearAllTimers();
 
-colorOptions.innerHTML='';
+  colorScoreValue=0;
+  colorTime=15;
+  colorRunning=true;
 
-o.forEach(c=>{
-let b=document.createElement('button');
+  colorScore.textContent="0";
+  colorTimer.textContent="Time: 15s";
+  colorMessage.textContent="";
 
-b.className='choice';
-b.textContent=c[0];
-b.style.background=c[1];
+  colorStartButton.style.display="none";
+  colorAgainButton.style.display="none";
 
-b.onclick=()=>{
-if(!ci)return;
+  createColorRound();
+  sound(650,.12);
 
-if(c===ans){
-csco++;
-cs.textContent=csco;
-fx(700);
-newColor();
-}else{
-fx(250);
-}
-};
+  const timer=setInterval(()=>{
+    colorTime--;
 
-colorOptions.appendChild(b);
-});
-}
+    colorTimer.textContent="Time: "+colorTime+"s";
 
-function colorStart(){
-clearInterval(ci);
+    if(colorTime<=0){
+      clearInterval(timer);
+      timers=timers.filter(x=>x!==timer);
 
-csco=0;
-ctime=15;
+      colorRunning=false;
 
-cs.textContent=0;
-ct.textContent='Time: 15s';
-cm.textContent='';
+      const best=saveBest(
+        "colorBest",
+        colorScoreValue
+      );
 
-colorStart.style.display='none';
-colorAgain.style.display='none';
+      colorBest.textContent=best;
 
-newColor();
-fx(500);
+      colorMessage.textContent=
+        "⏱️ Time's up! Score: "+colorScoreValue;
 
-ci=setInterval(()=>{
-ctime--;
-ct.textContent='Time: '+ctime+'s';
+      colorStartButton.style.display="inline-block";
+      colorAgainButton.style.display="inline-block";
 
-if(ctime<=0){
-clearInterval(ci);
+      sound(250,.25);
+    }
+  },1000);
 
-cb.textContent=best('colorBest',csco);
-cm.textContent="⏱️ Time's up! Score: "+csco;
-
-colorStart.style.display='inline-block';
-colorAgain.style.display='inline-block';
-
-beep(300,.2);
-}
-},1000);
+  timers.push(timer);
 }
 
-cb.textContent=localStorage.getItem('colorBest')||0;
+colorBest.textContent=getBest("colorBest");
 
 /* TIC TAC TOE */
-let bd=[],over=false;
+let boardState=[];
+let gameOver=false;
+let computerThinking=false;
 
-function tttStart(){
-bd=['','','','','','','','',''];
-over=false;
-tmm.textContent='Your turn!';
-draw();
+function startTTT(){
+  clearAllTimers();
+
+  boardState=[
+    "","","",
+    "","","",
+    "","",""
+  ];
+
+  gameOver=false;
+  computerThinking=false;
+
+  tttMessage.textContent="Your turn!";
+  drawTTT();
+
+  sound(550,.1);
 }
 
-function draw(){
-board.innerHTML='';
+function drawTTT(){
+  tttBoard.innerHTML="";
 
-bd.forEach((v,i)=>{
-let b=document.createElement('button');
-
-b.className='cell';
-b.textContent=v;
-
-b.onclick=()=>play(i);
-
-board.appendChild(b);
-});
-}
-
-function win(p){
-return[
-[0,1,2],
-[3,4,5],
-[6,7,8],
-[0,3,6],
-[1,4,7],
-[2,5,8],
-[0,4,8],
-[2,4,6]
-].some(a=>a.every(i=>bd[i]===p));
-}
-
-function play(i){
-if(over||bd[i])return;
-
-bd[i]='X';
-fx(600);
-draw();
-
-if(win('X'))return end('🎉 You win!');
-if(bd.every(Boolean))return end('🤝 Draw!');
-
-tmm.textContent="Computer's turn...";
-setTimeout(cpu,400);
-}
-
-function cpu(){
-if(over)return;
-
-let e=bd.map((v,i)=>v?null:i).filter(i=>i!==null);
-
-if(!e.length)return;
-
-bd[e[Math.floor(Math.random()*e.length)]]='O';
-
-fx(400);
-draw();
-
-if(win('O'))return end('🤖 Computer wins!');
-if(bd.every(Boolean))return end('🤝 Draw!');
-
-tmm.textContent='Your turn!';
-}
-
-function end(m){
-over=true;
-tmm.textContent=m;
-beep(m.includes('win')?800:300,.2);
-}
-
-memoryStart();
-tttStart();
-</script>
-
-</body>
-  </html>
+  boardState.forEach((value,index)=>{
+    const cell=documen
